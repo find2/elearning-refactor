@@ -83,12 +83,33 @@ function delete_enrolled_class(id){
         );
     }
 }
+
+function show_student_name(){
+	var class_id = $('#class_code').val().trim();
+	$.post("php/show_student_name.php", {
+		class_id:class_id
+	}, function (data, status) {
+		$("#student_code").children().remove();
+		$("#student_code").append(data);
+	});
+}
+
+function delete_student(){
+	var student_id = $('#student_code').val().trim();
+	var class_id = $('#class_code').val().trim();
+	var student_name = $("#student_code option:selected").text();
+	$.post("php/delete_student.php", {
+		student_id:student_id,
+		class_id:class_id
+	}, function (data, status) {
+		alert(student_name+'deleted.');
+	});
+}
 //Enrollment End
 
 //Post Start
 function post(){
 	$.post("php/post.php", {
-		// Need Input id_class
 	}, function (data, status) {
 		$("#main_content").html(data);
 
@@ -100,11 +121,14 @@ function post_comment(id){
 
 	var comment = $("#t_"+id).val();
 	comment = comment.trim();
+	var class_id = $('#code_class').val();
+	class_id = class_id.trim();
 		if (comment == "") {
 		}
 		else {
 				$.post("php/post_comment.php", {
 					comment:comment,
+					id_class:id_class,
 					post_id:id
 				}, function (data, status) {
 					$("#t_"+id).val("");

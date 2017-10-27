@@ -265,7 +265,20 @@ class CRUD
 	//---------------------------Start Enroll------------------------------------------
 
 	//---------------------------End Enroll------------------------------------------
-	public function Enroll_Modal(){
+	public function Enroll_Modal($user_id){
+    $query = $this->db->prepare("SELECT enrolled_user.id_class, class.class_name FROM enrolled_user, class WHERE enrolled_user.id_user= :user_id AND enrolled_user.id_class=class.id");
+		$query->bindParam("user_id", $user_id, PDO::PARAM_STR);
+        $query->execute();
+        $codes = array();
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $codes[] = $row;
+        }
+        $data_code="";
+        if(count($codes)>0){
+        	foreach($codes as $code){
+        		$data_code.='<option value="'. $code['id_class'] .'"">'. $code['class_name'] .'</option>';
+        	}
+        }
 		$data='
 		<div class="modal fade" id="enroll_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		    <div class="modal-dialog" role="document">
@@ -292,26 +305,29 @@ class CRUD
 		    </div>
 		</div>
 
-		<div class="modal fade" id="create_class_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal fade" id="delete_student_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		    <div class="modal-dialog" role="document">
 		        <div class="modal-content">
 		            <div class="modal-header">
 		                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		                <h4 class="modal-title" id="myModalLabel">Create New Class</h4>
+		                <h4 class="modal-title" id="myModalLabel">Delete Student From Class</h4>
 		            </div>
 		            <div class="modal-body">
 						<div class="form-group">
-							<label for="code">Code Subject:</label>
-							<input type="text" id="code_class" placeholder="Code Subject" class="form-control"/>
-						</div>
-						<div class="form-group">
-							<label for="password">Enrollment Key:</label>
-							<input type="password" id="password_class" placeholder="" class="form-control"/>
+              <label for="class_code">Class Name:</label>
+              <select id="class_code" class="form-control" onchange="show_student_name()">
+                <option value="">--</option>
+                '. $data_code .'
+              </select><br>
+							<label for="student_code">Student Name:</label>
+							<select id="student_code" class="form-control">
+                <option value="">--</option>
+              </select>
 						</div>
 					</div>
 		            <div class="modal-footer">
 		                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-		                <button type="button" class="btn btn-primary" onclick="create_class()">Create</button>
+		                <button type="button" class="btn btn-danger" onclick="delete_student()">Delete Student</button>
 		            </div>
 		        </div>
 		    </div>
@@ -332,7 +348,7 @@ class CRUD
 		</br>
 			<div class="pull-left">
 				<button class="btn btn-success btn-md" data-toggle="modal" data-target="#enroll_modal">Enroll To Class</button>
-				<button class="btn btn-success btn-md" data-toggle="modal" data-target="#create_class_modal">Create Class</button>
+				<button class="btn btn-success btn-md" data-toggle="modal" data-target="#delete_student_modal">Delete Student</button>
 			</div>
 		</br></br>
 		<div class="row text-center"><h2> Class That You Already Enrolled:</h2></div>
@@ -507,6 +523,101 @@ class CRUD
         $query->execute();
     }
 
+    public function Show_Student_Name($id_class, $monarch, $id_user){
+      $query = $this->db->prepare("SELECT enrolled_user.id_user, users.name FROM enrolled_user, users WHERE enrolled_user.id_class= :id_class AND enrolled_user.id_user=users.id AND enrolled_user.id_user NOT IN(:id_user)");
+      $query->bindParam("id_class", $id_class, PDO::PARAM_STR);
+      $query->bindParam("id_user", $id_user, PDO::PARAM_STR);
+      $query->execute();
+      $codes = array();
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+          $codes[] = $row;
+      }
+      $data_code='<option value="">--</option>';
+      if(count($codes)>0){
+        foreach($codes as $code){
+          $data_code.='<option value="'. $code['id_user'] .'"">'. $code['name'] .'</option>';
+        }
+      }
+      return $data_code;
+    }
+
+    public function Delete_Student_Attempt_Quiz($id_class, $student_id){
+      $query = $this->db->prepare("SELECT attempt_quiz.id FROM attempt_quiz, quiz WHERE attempt_quiz.id_user= :student_id AND quiz.id_class= :id_class AND attempt_quiz.id_quiz=quiz.id");
+      $query->bindParam("id_class", $id_class, PDO::PARAM_STR);
+      $query->bindParam("student_id", $student_id, PDO::PARAM_STR);
+      $query->execute();
+      $codes = array();
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+          $codes[] = $row;
+      }
+      if(count($codes)>0){
+        foreach($codes as $code){
+          $query2 = $this->db->prepare("DELETE FROM attempt_quiz WHERE id = :id");
+            $query2->bindParam("id", $code['id'], PDO::PARAM_STR);
+            $query2->execute();
+        }
+      }
+    }
+
+    public function Delete_Student_Assignment($id_class, $student_id){
+      $query = $this->db->prepare("DELETE FROM assignment WHERE user_id= :student_id AND class_id= :class_id");
+        $query->bindParam("student_id", $id_user, PDO::PARAM_STR);
+        $query->bindParam("class_id", $student_id, PDO::PARAM_STR);
+        $query->execute();
+    }
+
+    public function Delete_Student_Badges($id_class, $student_id){
+      $query = $this->db->prepare("DELETE FROM badges WHERE user_id= :student_id AND class_id= :class_id");
+        $query->bindParam("student_id", $student_id, PDO::PARAM_STR);
+        $query->bindParam("class_id", $id_class, PDO::PARAM_STR);
+        $query->execute();
+    }
+
+    public function Delete_Student_Comment_Quiz($id_class, $student_id){
+      $query = $this->db->prepare("DELETE FROM comment_quiz WHERE user_id= :student_id AND class_id= :class_id");
+        $query->bindParam("student_id", $student_id, PDO::PARAM_STR);
+        $query->bindParam("class_id", $id_class, PDO::PARAM_STR);
+        $query->execute();
+    }
+
+    public function Delete_Student_Comment($id_class, $student_id){
+      $query = $this->db->prepare("SELECT comment_tb.id FROM comment_tb, posts WHERE comment_tb.id_user= :student_id AND posts.id_class= :id_class AND comment_tb.id_posts=posts.id");
+      $query->bindParam("id_class", $id_class, PDO::PARAM_STR);
+      $query->bindParam("student_id", $student_id, PDO::PARAM_STR);
+      $query->execute();
+      $codes = array();
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+          $codes[] = $row;
+      }
+      if(count($codes)>0){
+        foreach($codes as $code){
+          $query2 = $this->db->prepare("DELETE FROM comment_tb WHERE id = :id");
+            $query2->bindParam("id", $code['id'], PDO::PARAM_STR);
+            $query2->execute();
+        }
+      }
+    }
+
+    public function Delete_Student_Enrolled_User($id_class, $student_id){
+      $query = $this->db->prepare("DELETE FROM enrolled_user WHERE id_user= :student_id AND id_class= :class_id");
+        $query->bindParam("student_id", $student_id, PDO::PARAM_STR);
+        $query->bindParam("class_id", $id_class, PDO::PARAM_STR);
+        $query->execute();
+    }
+
+    public function Delete_Student_Rating($id_class, $student_id){
+      $query = $this->db->prepare("DELETE FROM rating WHERE user_id= :student_id AND class_id= :class_id");
+        $query->bindParam("student_id", $student_id, PDO::PARAM_STR);
+        $query->bindParam("class_id", $id_class, PDO::PARAM_STR);
+        $query->execute();
+    }
+
+    public function Delete_Student_Statistic($id_class, $student_id){
+      $query = $this->db->prepare("DELETE FROM statistic WHERE user_id= :student_id AND class_id= :class_id");
+        $query->bindParam("student_id", $student_id, PDO::PARAM_STR);
+        $query->bindParam("class_id", $id_class, PDO::PARAM_STR);
+        $query->execute();
+    }
     //ENROLL END
 
     //MATERIAL START
@@ -1112,6 +1223,89 @@ class CRUD
         $query->execute();
   }
     //Quiz END
+
+    // Statistic START
+    public function Validate_Statistic($id_user, $id_class){
+      $query = $this->db->prepare("SELECT total_post, total_comment, total_upload, total_download FROM statistic WHERE user_id= :id_user AND class_id= :id_class");
+  		$query->bindParam("id_user", $id_user, PDO::PARAM_STR);
+  		$query->bindParam("id_class", $id_class, PDO::PARAM_STR);
+          $query->execute();
+          $data = array();
+          while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+              $data[] = $row;
+          }
+          if(count($data)>0){
+          	$result = "1";
+          }
+          else{
+          	$result= "0";
+          }
+          return $result;
+    }
+
+    public function Save_Statistic($id_user, $id_class, $post, $comment, $download, $upload){
+      $query = $this->db->prepare("INSERT INTO statistic (user_id, class_id, total_post, total_comment, total_upload, total_download)
+  			VALUES (:user_id, :class_id, :post, :coment, :upload, :download)");
+          $query->bindParam("user_id", $id_user, PDO::PARAM_STR);
+          $query->bindParam("class_id", $id_class, PDO::PARAM_STR);
+          $query->bindParam("post", $post, PDO::PARAM_STR);
+          $query->bindParam("coment", $comment, PDO::PARAM_STR);
+          $query->bindParam("upload", $download, PDO::PARAM_STR);
+          $query->bindParam("download", $upload, PDO::PARAM_STR);
+          $query->execute();
+          return $this->db->lastInsertId();
+    }
+
+    public function Get_Statistic_Post($id_user, $id_class){
+      $query = $this->db->prepare("SELECT total_post FROM statistic WHERE user_id= :id_user AND class_id= :id_class");
+  		$query->bindParam("id_user", $id_user, PDO::PARAM_STR);
+  		$query->bindParam("id_class", $id_class, PDO::PARAM_STR);
+          $query->execute();
+          $data = array();
+          while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+              $data[] = $row;
+          }
+          if(count($data)>0){
+              foreach ($data as $post) {
+                $total_post=$post['total_post'];
+              }
+          }
+          return $total_post;
+    }
+
+    public function Get_Statistic_Comment($id_user, $id_class){
+      $query = $this->db->prepare("SELECT total_comment FROM statistic WHERE user_id= :id_user AND class_id= :id_class");
+  		$query->bindParam("id_user", $id_user, PDO::PARAM_STR);
+  		$query->bindParam("id_class", $id_class, PDO::PARAM_STR);
+          $query->execute();
+          $data = array();
+          while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+              $data[] = $row;
+          }
+          if(count($data)>0){
+              foreach ($data as $comment) {
+                $total_comment=$comment['total_comment'];
+              }
+          }
+          return $total_comment;
+    }
+
+    public function Update_Statistic_Post($id_user, $id_class, $statistic_post){
+      $query = $this->db->prepare("UPDATE statistic SET total_post= :post WHERE user_id= :user_id AND class_id= :class_id");
+          $query->bindParam("post", $statistic_post, PDO::PARAM_STR);
+          $query->bindParam("user_id", $id_user, PDO::PARAM_STR);
+          $query->bindParam("class_id", $id_class, PDO::PARAM_STR);
+          $query->execute();
+    }
+
+    public function Update_Statistic_Comment($id_user, $id_class, $statistic_comment){
+      $query = $this->db->prepare("UPDATE statistic SET total_comment= :comment WHERE user_id= :user_id AND class_id= :class_id");
+          $query->bindParam("comment", $statistic_comment, PDO::PARAM_STR);
+          $query->bindParam("user_id", $id_user, PDO::PARAM_STR);
+          $query->bindParam("class_id", $id_class, PDO::PARAM_STR);
+          $query->execute();
+    }
+    // Statistic END
 }
 
 

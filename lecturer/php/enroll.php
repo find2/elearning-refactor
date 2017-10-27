@@ -2,8 +2,9 @@
     session_start();
     require 'lib.php';
     $username=$_SESSION['e_username'];
+    $user_id=$_SESSION['e_user_id'];
     $object = new CRUD();
-    $data=$object->Enroll_Modal(); 
+    $data=$object->Enroll_Modal($user_id);
     $data.=$object->Header_Enroll();
     $codes = $object->Data_Enroll_Table($username);
     if(count($codes)>0){
