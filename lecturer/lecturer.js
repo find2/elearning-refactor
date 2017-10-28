@@ -121,8 +121,8 @@ function post_comment(id){
 
 	var comment = $("#t_"+id).val();
 	comment = comment.trim();
-	var class_id = $('#code_class').val();
-	class_id = class_id.trim();
+	var id_class = $('#code_class').val();
+	id_class = id_class.trim();
 		if (comment == "") {
 		}
 		else {

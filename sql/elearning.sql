@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 27 Okt 2017 pada 10.46
+-- Generation Time: 28 Okt 2017 pada 13.12
 -- Versi Server: 10.1.25-MariaDB
 -- PHP Version: 7.1.7
 
@@ -178,7 +178,8 @@ INSERT INTO `comment_tb` (`id`, `description`, `id_user`, `id_posts`, `date_crea
 (9, 'Testing comment count gen 1', 2, 14, '2017-10-27 04:32:55'),
 (10, 'Testing comment gen 1 again count this fuck up', 2, 14, '2017-10-27 04:34:35'),
 (11, 'test coment', 2, 14, '2017-10-27 04:41:57'),
-(12, 'test comment hello', 2, 6, '2017-10-27 04:43:38');
+(12, 'test comment hello', 2, 6, '2017-10-27 04:43:38'),
+(13, 'Comment Comment asfddfd', 2, 14, '2017-10-28 07:08:47');
 
 -- --------------------------------------------------------
 
@@ -434,7 +435,7 @@ CREATE TABLE `statistic` (
 
 INSERT INTO `statistic` (`id`, `user_id`, `class_id`, `total_post`, `total_comment`, `total_upload`, `total_download`) VALUES
 (1, 2, 9, 2, 0, 0, 0),
-(2, 2, 1, 1, 0, 0, 0);
+(2, 2, 1, 1, 1, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -634,7 +635,7 @@ ALTER TABLE `assignment`
 -- AUTO_INCREMENT for table `attempt_quiz`
 --
 ALTER TABLE `attempt_quiz`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `badges`
@@ -664,7 +665,7 @@ ALTER TABLE `comment_quiz`
 -- AUTO_INCREMENT for table `comment_tb`
 --
 ALTER TABLE `comment_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `enroll`
