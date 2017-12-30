@@ -6,7 +6,8 @@
     $object = new CRUD();
     //$data=$object->Quiz_Modal($username, $monarch);
     $data=$object->Show_Quiz_Modal($username, $monarch);
-    //Codes here
-    $data.='</div></div>';
+    $data.=$object->Show_Student_Score_Modal();
+    $data.=$object->Student_Score_Modal();
+    $data .= $object->Quiz_Header();
     echo $data;
 ?>

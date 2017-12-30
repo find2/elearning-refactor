@@ -4,6 +4,7 @@
   require 'lib.php';
   $object = new CRUD();
   $id_class=$_POST['class_id'];
+  $current_user=$_SESSION['e_username'];
   $monarch=$_SESSION['e_monarch'];
   $data="";
   $posts = $object->Read_Post($id_class, $monarch);
@@ -13,7 +14,7 @@
           $comments=$object->Read_Comment($post['post_id'], $monarch);
           if(count($comments>0)){
               foreach($comments as $comment){
-                  $data.=$object->Comment_post($comment['username'], $comment['date_created'], $comment['content'], $comment['comment_id']);
+                  $data.=$object->Comment_Post($comment['username'], $comment['date_created'], $comment['content'], $comment['comment_id'], $current_user);
               }
           }
           $data.= $object->End_Post($post['post_id']);

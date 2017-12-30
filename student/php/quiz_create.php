@@ -2,7 +2,7 @@
 session_start();
     require("lib.php");
     date_default_timezone_set("Asia/Brunei");
-	$date_created = date("Y-m-d h:i:sa");
+	$date_created = date("Y-m-d H:i:s");
 	$user_id=$_SESSION['e_user_id'];
 	$class_id = $_POST['class_code'];
 	$quiz_name = $_POST['title'];

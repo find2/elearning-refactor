@@ -7,7 +7,8 @@
     $username=$_SESSION['e_username'];
     $monarch=$_SESSION['e_monarch'];
     $data=$object->Create_Post_Modal($username, $monarch);
-    $data.=$object->Header_Post($username, $monarch);
+    //$data.=$object->Show_Post_Modal($username, $monarch);
+    $data.=$object->Header_Post();
     /*$posts = $object->Read_Post($id_class, $monarch);
     if(count($posts)>0){
         foreach ($posts as $post) {
@@ -21,7 +22,6 @@
             $data.= $object->End_Post($post['post_id']);
         }
     }*/
-    $data.='</div></section>';
     echo $data;
 
 ?>

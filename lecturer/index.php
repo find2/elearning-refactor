@@ -22,13 +22,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Ionicons -->
   <link rel="stylesheet" href="../plugins/datatables/dataTables.bootstrap.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.css">
-
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect.
-  -->
+  
+  <!-- Ion Range Slider -->
+  
+  <link rel="stylesheet" href="../dist/css/ion.rangeSlider.css" />
+  <link rel="stylesheet" href="../dist/css/ion.rangeSlider.skinFlat.css" />
+  
+  <!-- Include Date Range Picker -->
+  
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -65,9 +69,9 @@ desired effect
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="#" class="logo">
+    <a href="" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>E-Learning</b></span>
+      <span class="logo-mini"><b>E</b></span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>E-Learning </b></span>
     </a>
@@ -82,97 +86,48 @@ desired effect
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <!-- Menu toggle button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">0</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header"></li>
-              <li>
-                <!-- inner menu: contains the messages -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <!-- User Image -->
-                        <img src="../dist/img/avatar5.png" class="img-circle" alt="User Image">
-                      </div>
-                      <!-- Message title and timestamp -->
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <!-- The message -->
-                      <p></p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                </ul>
-                <!-- /.menu -->
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
+          
           <!-- /.messages-menu -->
 
           <!-- Notifications Menu -->
           <li class="dropdown notifications-menu">
             <!-- Menu toggle button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="show_post_comment_notif()">
               <i class="fa fa-bell-o"></i>
-              <span class="label label-warning">0</span>
+              <span class="label label-warning" id="post_comment_label">0</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 0 notifications</li>
+              <li class="header" id="post_comment_header">You have 0 notification</li>
               <li>
                 <!-- Inner Menu: contains the notifications -->
-                <ul class="menu">
-                  <li><!-- start notification -->
-                    <a href="#">
-                      <i class="fa fa-users text-aqua"></i>
-                    </a>
-                  </li>
+                <ul class="menu" id="post_comment_notif">
+                  <!-- start notification -->
+                  
                   <!-- end notification -->
                 </ul>
               </li>
-              <li class="footer"><a href="#">View all</a></li>
+              <li class="footer"><a href="all_notif.php?cid=0">View all</a></li>
             </ul>
           </li>
           <!-- Tasks Menu -->
           <li class="dropdown tasks-menu">
             <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="show_assignment_quiz_notif()">
               <i class="fa fa-flag-o"></i>
-              <span class="label label-danger">0</span>
+              <span class="label label-danger" id="assignment_quiz_label">0</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 0 tasks</li>
+              <li class="header" id="assignment_quiz_header">You have 0 task</li>
               <li>
                 <!-- Inner menu: contains the tasks -->
-                <ul class="menu">
-                  <li><!-- Task item -->
-                    <a href="#">
-                      <!-- Task title and progress text -->
-                      <h3>
-
-                        <small class="pull-right">100</small>
-                      </h3>
-                      <!-- The progress bar -->
-                      <div class="progress xs">
-                        <!-- Change the css width attribute to simulate progress -->
-                        <div class="progress-bar progress-bar-aqua" style="width: 100%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                          <span class="sr-only">100% Complete</span>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
+                <ul class="menu" id="assignment_quiz_notif">
+                  <!-- Task item -->
+                  
                   <!-- end task item -->
                 </ul>
               </li>
               <li class="footer">
-                <a href="#">View all tasks</a>
+                <a href="all_notif.php?cid=1">View all</a>
               </li>
             </ul>
           </li>
@@ -256,21 +211,8 @@ desired effect
       <ul class="sidebar-menu">
         <li class="header">Navigation</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a onclick="home()" href="#"><i class="fa fa-home"></i> <span>Home</span></a></li>
-        <li><a onclick="post()" href="#"><i class="fa fa-keyboard-o"></i> <span>Post</span></a></li>
-        <li><a onclick="enrollment()" href="#"><i class="fa fa-key"></i> <span>Enrollment</span></a></li>
-        <li class="treeview">
-    			<a onclick="foundation()" href="#"><i class="fa fa-university"></i> <span>Courses</span>
-    				<span class="pull-right-container">
-    				  <i class="fa fa-angle-left pull-right"></i>
-    				</span>
-    			</a>
-    			<ul class="treeview-menu">
-  						<li><a onclick="general_material()" href="#"><i class="fa fa-folder-o"></i><span>General Material</span></a></li>
-  						<li><a onclick="assignment()" href="#"><i class="fa fa-folder-o"></i><span>Assignment</span></a></li>
-  						<li><a onclick="quiz()" href="#"><i class="fa fa-folder-o"></i><span>Quiz</span></a></li>
-    			</ul>
-        </li>
+        <li class="active"><a onclick="home()" href="#"><i class="fa fa-home"></i> <span>Information</span></a></li>
+        <li><a onclick="enrollment()" href="#"><i class="fa fa-key"></i> <span>Class</span></a></li>
 	    </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -278,8 +220,12 @@ desired effect
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper" id="main_content">
-
+  <div class="content-wrapper">
+    <div class ="row" style="margin-left:15px; margin-right:15px;">
+      <div id="info_alert"></div>
+    </div>
+    
+    <div id="main_content"></div>
   </div>
   <!-- /.content-wrapper -->
 
@@ -398,5 +344,22 @@ desired effect
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 
 <script src="lecturer.js"></script>
+
+<!-- Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+<!-- Slider Ion Range -->
+<script src="../dist/js/ion.rangeSlider.js"></script>
+
+<script>
+  $(function (){
+  	home();
+  	welcome_alert();
+  	count_post_comment();
+  	count_assignment_quiz();
+  });
+</script>
+
 </body>
 </html>

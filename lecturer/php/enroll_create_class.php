@@ -7,7 +7,7 @@ if (isset($_POST)) {
     $password = $_POST['password'];
     $object = new CRUD();
     date_default_timezone_set("Asia/Brunei");
-	$date_created = date("Y-m-d h:i:sa");
+	$date_created = date("Y-m-d H:i:s");
     $result=$object->Enroll_Create_Class($code, $password, $username, $date_created);
     if($result!="")
         $result=1;

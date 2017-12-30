@@ -3,8 +3,9 @@
     require 'lib.php';
     $username=$_SESSION['e_username'];
     $user_id=$_SESSION['e_user_id'];
+    $monarch=$_SESSION['e_monarch'];
     $object = new CRUD();
-    $data=$object->Enroll_Modal($user_id);
+    $data=$object->Enroll_Modal($user_id, $monarch);
     $data.=$object->Header_Enroll();
     $codes = $object->Data_Enroll_Table($username);
     if(count($codes)>0){
@@ -23,6 +24,9 @@
     }
     $data.=' </tbody>
                 </table>
-            </div></div>';
+                </div>
+		</div>
+            </div></div>
+    </section>';
     echo $data;
 ?>

@@ -9,7 +9,7 @@ if (isset($_POST)) {
     $password = $_POST['password'];
     $object = new CRUD();
     date_default_timezone_set("Asia/Brunei");
-	$date = date("Y-m-d h:i:sa");
+	  $date = date("Y-m-d H:i:s");
     $enroll_codes=$object->Get_Enroll_Id($id_class);
     if(count($enroll_codes)>0){
       foreach ($enroll_codes as $enroll) {

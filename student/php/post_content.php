@@ -2,7 +2,7 @@
 	session_start();
     require("lib.php");
     date_default_timezone_set("Asia/Brunei");
-	$date_created = date("Y-m-d h:i:sa");
+	$date_created = date("Y-m-d H:i:s");
 	$description = $_POST['description'];
 	$id_class = $_POST['post_to'];
 	$id_user=$_SESSION['e_user_id'];

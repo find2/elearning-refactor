@@ -6,7 +6,6 @@ error_reporting(0);
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8">
@@ -18,13 +17,13 @@ error_reporting(0);
     <title>Monarch Bali</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Theme CSS -->
-    <link href="vendors/freelancer.min.css" rel="stylesheet">
+    <link href="dist/css/freelancer.min.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="dist/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
@@ -124,10 +123,9 @@ error_reporting(0);
             <i class="fa fa-chevron-up"></i>
         </a>
     </div>
-
-   <script src="vendors/jquery/dist/jquery.min.js"></script>
+   <script src="dist/js/jquery.js"></script>
     <!-- Bootstrap 3.3.7 -->
-    <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/bootstrap.min.js"></script>
 
     <!-- Plugin JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
